@@ -33,7 +33,7 @@
 
     <script>
         async function loadEmployee() {
-            const id = window.location.pathname.split('/').pop();
+            const id = window.location.pathname.split ('/').pop();
             console.log('Loading employee with ID:', id);  
             try {
                 const response = await fetch(`/api/employee/${id}`);

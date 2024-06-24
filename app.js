@@ -56,11 +56,24 @@ app.put('/api/update/:id', (req, res) => {
     }
 });
 
-app.post('/api/delete/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-    employees = employees.filter(emp => emp.id !== id);
-    res.redirect('/');
+// app.post('/api/delete/:id', (req, res) => {
+//     const id = parseInt(req.params.id);
+//     employees = employees.filter(emp => emp.id !== id);
+//     res.redirect('/');
+// });
+
+app.delete('/api/delete/:id', (req, res) => {
+    const userId = parseInt(req.params.id);
+    const userIndex = employees.findIndex(user => user.id === userId);
+
+    if (userIndex !== -1) {
+        employees.splice(userIndex, 1);
+        res.json({ message: 'Employee deleted successfully' });  // Respond with a success message
+    } else {
+        res.status(404).json({ error: 'Employee not found' });
+    }
 });
+
 
 app.use((req, res) => {
     res.status(404).send('Page not found');

@@ -16,9 +16,7 @@
         <div class="text-xl font-semibold mb-4">Employee Details</div>
         <div id="employeeDetails"></div>
         <a id="updateLink" href="#" class="bg-yellow-500 text-white py-2 px-4 rounded inline-block mt-4">Update</a>
-        <form id="deleteForm" method="POST" action="#">
-            <button type="submit" class="bg-red-600 text-white py-2 px-4 rounded mt-4">Delete</button>
-        </form>
+        <button id="deleteButton" class="bg-red-600 text-white py-2 px-4 rounded mt-4">Delete</button>
     </div>
 
     <script>
@@ -35,12 +33,27 @@
                         <p><bold>Department:</bold> ${employee.department}</p>
                     `;
                     document.getElementById('updateLink').href = `/update/${employee.id}`;
-                    document.getElementById('deleteForm').action = `/api/delete/${employee.id}`;
+                    document.getElementById('deleteButton').addEventListener('click', () => deleteEmployee(employee.id));
                 } else {
                     document.getElementById('employeeDetails').innerHTML = `<p>${employee.error}</p>`;
                 }
             } catch (error) {
                 console.error('Error loading employee:', error);
+            }
+        }
+        async function deleteEmployee(id) {
+            try {
+                const response = await fetch(`/api/delete/${id}`, {
+                    method: 'DELETE'
+                });
+                if (response.ok) {
+                    window.location.href = '/';
+                } else {
+                    const error = await response.json();
+                    console.error('Error deleting employee:', error);
+                }
+            } catch (error) {
+                console.error('Error deleting employee:', error);
             }
         }
 
